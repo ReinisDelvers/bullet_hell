@@ -23,17 +23,10 @@
       var FPS = 60;           // How many frames per second
       var time_remaining = 20;
 
-
       function restart_game() {
         // This gets called when the 'R' key is pressed and just sets 
         // some important variables back to the start.
         // Alternatively they could just reload the page
-        time_remaining = 300;
-        score = 0;
-        enemy_speed = 3;
-      }
-
-      function ImagesTouching(x1, y1, img1, x2, y2, img2) {           // Alternatively they could just reload the page
         time_remaining = 300;
         score = 0;
         enemy_speed = 3;
@@ -45,27 +38,17 @@
         return true;           // otherwise, overlap   
       }
 
-
-      ship_y = myCanvas.height - ShipImg.height;           // ensure ship always at bottom of canvas
-      ctx.drawImage(ShipImg, ship_x, ship_y);           // and draw it
+      ctx.drawImage(ShipImg, ship_x, ship_y);           //  draw ship
 
       ctx.fillStyle= "purple";
       ctx.font = "20px Arial";
       ctx.fillText("Score: " + score, 0, 20);           // display the score
-
-
-      enemy_y = enemy_y + enemy_speed;           // move the enemy down the screen
-
-      if (enemy_y > myCanvas.height) {           // if it's gone past the bottom
-        enemy_y= 0;           // move it back to the top
-        enemy_x= Math.random() * (myCanvas.width - EnemyImg.width);           // pick a random x-position, always fully visible
-      }   
+ 
             
-
       ctx.drawImage(EnemyImg, enemy_x, enemy_y);           // draw the enemy
 
       if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {           // check for touching
-        score= score + 1;           // add one to score
+        score= score - 1;           // subtract one to score
         enemy_speed = enemy_speed + 0.5;           // and make it fall a bit faster
         enemy_x= -EnemyImg.width;           // hide the enemy so the score doesn't rocket
       }
@@ -81,11 +64,6 @@
         if (MyEvent.keyCode == 82) restart_game();           // R to restart 
         MyEvent.preventDefault();
       }
-
-      addEventListener("keydown", MyKeyDownHandler);           // listen for keystrokes  
-
-      myCanvas.width = window.innerWidth - 20;           // fill the entire browser width
-      myCanvas.height = window.innerHeight - 20;           // fill the entire browser height
 
     </script>
   </body>

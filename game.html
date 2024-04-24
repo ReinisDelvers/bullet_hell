@@ -35,18 +35,8 @@
      enemy_speed = 3;
      }
 
-    function ImagesTouching(x1, y1, img1, x2, y2, img2) {
-            //
-            // Alternatively they could just reload the page
-            time_remaining = 300;
-            score = 0;
-            melon_speed = 3;
-            }
 
-    function ImagesTouching(x1, y1, img1, x2, y2, img2) {
-                //
-                // This function detects whether two images are touching - very useful function
-                // 
+    function ImagesTouching(x1, y1, img1, x2, y2, img2) {                       // This function detects whether two images are touching - very useful function
                 if (x1 >= x2+img2.width || x1+img1.width <= x2) return false;   // too far to the side
                 if (y1 >= y2+img2.height || y1+img1.height <= y2) return false; // too far above/below
                 return true;                                                    // otherwise, overlap   

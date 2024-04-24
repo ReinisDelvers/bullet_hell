@@ -25,7 +25,7 @@
 
 
       function restart_game() {
-          // This gets called when the 'S' key is pressed and just sets 
+          // This gets called when the 'R' key is pressed and just sets 
           // some important variables back to the start.
           //
           // Alternatively they could just reload the page
@@ -39,7 +39,7 @@
                 // Alternatively they could just reload the page
                 time_remaining = 300;
                 score = 0;
-                melon_speed = 3;
+                enemy_speed = 3;
                 }
 
       function ImagesTouching(x1, y1, img1, x2, y2, img2) {
@@ -52,7 +52,7 @@
                 }
 
 
-      ship_y = myCanvas.height - ShipImg.height;                              // ensure bug always at bottom of canvas
+      ship_y = myCanvas.height - ShipImg.height;                              // ensure ship always at bottom of canvas
       ctx.drawImage(ShipImg, ship_x, ship_y);                                  // and draw it
 
       ctx.fillStyle= "purple";

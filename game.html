@@ -1,28 +1,28 @@
 <html>
  <head>
-  <title> My Melon Falling Game </title>
+  <title> Space Bullet Hell </title>
  </head>
 
 <body>
-<canvas id="myCanvas" width=400 height=200 style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover">
+<canvas id="myCanvas" width=200 height=400 style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover">
   </canvas> 
 <script>
 
  var ctx = myCanvas.getContext("2d");
 
 
- var bug_x = 0;
- var bug_y = 0;
- var BugImg = new Image();
- BugImg.src = "https://preview.redd.it/kfctkbq1zhb61.png?width=250&format=png&auto=webp&s=0037e6fa2d03fda3752e8192fe1c3ef780440747";         // The bug
+ var ship_x = 0;
+ var ship_y = 0;
+ var ShipImg = new Image();
+ ShipImg.src = "https://preview.redd.it/kfctkbq1zhb61.png?width=250&format=png&auto=webp&s=0037e6fa2d03fda3752e8192fe1c3ef780440747";         // The player
 
- var melon_x = 0;
- var melon_y = 0;
- var MelonImg = new Image();
- MelonImg.src = "https://toppng.com/uploads/preview/2-3-4-enemy-spaceship-5-background-6-bullet-top-down-view-spaceshi-11563040481pwpyztbvjs.png";  // The melon
+ var enemy_x = 0;
+ var enemy_y = 0;
+ var EnemyImg = new Image();
+ EnemyImg.src = "https://toppng.com/uploads/preview/2-3-4-enemy-spaceship-5-background-6-bullet-top-down-view-spaceshi-11563040481pwpyztbvjs.png";  // The enemy
 
  var score = 0;
- var melon_speed = 3;
+ var enemy_speed = 3;
  var FPS = 60;                        // How many frames per second
  var time_remaining = 20;
 
@@ -34,7 +34,7 @@
      // Alternatively they could just reload the page
      time_remaining = 300;
      score = 0;
-     melon_speed = 3;
+     enemy_speed = 3;
      }
 
  function ImagesTouching(x1, y1, img1, x2, y2, img2) {
@@ -55,8 +55,8 @@
     ctx.fillText("Score: " + score, 0, 20);                               // display the score
 
 
-    bug_y = myCanvas.height - BugImg.height;                              // ensure bug always at bottom of canvas
-    ctx.drawImage(BugImg, bug_x, bug_y);                                  // and draw it
+    ship_y = myCanvas.height - ShipImg.height;                              // ensure bug always at bottom of canvas
+    ctx.drawImage(ShipImg, ship_x, ship_y);                                  // and draw it
 
     ctx.fillText("Time Remaining: " + Math.round(time_remaining), 0, 45); // display time remaining
 
@@ -72,20 +72,20 @@
     else {
           time_remaining = time_remaining - 1/FPS;                        // otherwise tick the time down
 
-          melon_y = melon_y + melon_speed;                                // move the melon down the screen
+          enemy_y = enemy_y + enemy_speed;                                // move the enemy down the screen
 
-          if (melon_y > myCanvas.height) {                                // if it's gone past the bottom
-              melon_y= 0;                                                 // move it back to the top
-              melon_x= Math.random() * (myCanvas.width - MelonImg.width); // pick a random x-position, always fully visible
+          if (enemy_y > myCanvas.height) {                                // if it's gone past the bottom
+              enemy_y= 0;                                                 // move it back to the top
+              enemy_x= Math.random() * (myCanvas.width - EnemyImg.width); // pick a random x-position, always fully visible
               }   
           }
 
-    ctx.drawImage(MelonImg, melon_x, melon_y);                            // draw the melon
+    ctx.drawImage(EnemyImg, enemy_x, enemy_y);                            // draw the enemy
 
-    if (ImagesTouching(bug_x, bug_y, BugImg, melon_x, melon_y, MelonImg)) {  // check for touching
+    if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {  // check for touching
         score= score + 1;                                                    // add one to score
-        melon_speed = melon_speed + 0.5;                                     // and make it fall a bit faster
-        melon_x= -MelonImg.width;                                            // hide the melon so the score doesn't rocket
+        enemy_speed = enemy_speed + 0.5;                                     // and make it fall a bit faster
+        enemy_x= -EnemyImg.width;                                            // hide the enemy so the score doesn't rocket
         }
     } 
 
@@ -93,10 +93,10 @@
 
 
  function MyKeyDownHandler (MyEvent) { 
-   if (MyEvent.keyCode == 37 && bug_x > 0) {bug_x = bug_x - 1;}                          // left
-   if (MyEvent.keyCode == 39 && bug_x+BugImg.width < myCanvas.width) {bug_x = bug_x+1;}
-   if (MyEvent.keyCode == 37 && bug_y > 0) {bug_y = bug_y - 1;}                          // left
-   if (MyEvent.keyCode == 39 && bug_y+BugImg.width < myCanvas.width) {bug_y = bug_y+1;}  // right
+   if (MyEvent.keyCode == 37 && ship_x > 0) {ship_x = ship_x - 1;}                          // left
+   if (MyEvent.keyCode == 39 && ship_x+ShipImg.width < myCanvas.width) {ship_x = ship_x+1;}
+   if (MyEvent.keyCode == 37 && ship_y > 0) {ship_y = ship_y - 1;}                          // left
+   if (MyEvent.keyCode == 39 && ship_y+ShipImg.width < myCanvas.width) {ship_y = ship_y+1;}  // right
    if (MyEvent.keyCode == 83) restart_game();                                             // S to restart 
    MyEvent.preventDefault();
    }

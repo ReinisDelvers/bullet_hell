@@ -3,10 +3,10 @@
   <title> Space Bullet Hell </title>
  </head>
 
-  <body>
+<body>
     <canvas id="myCanvas" width=200 height=400 style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover"></canvas> 
     
-    <script>
+<script>
 
       var bug_x = 0;
       var bug_y = 0;
@@ -24,41 +24,41 @@
       var time_remaining = 20;
 
 
-      var ship_x = 0;
-      var ship_y = 0;
-      var ShipImg = new Image();
-      ShipImg.src = "https://preview.redd.it/kfctkbq1zhb61.png?width=250&format=png&auto=webp&s=0037e6fa2d03fda3752e8192fe1c3ef780440747";         // The player
+ var ship_x = 0;
+ var ship_y = 0;
+ var ShipImg = new Image();
+ ShipImg.src = "https://preview.redd.it/kfctkbq1zhb61.png?width=250&format=png&auto=webp&s=0037e6fa2d03fda3752e8192fe1c3ef780440747";         // The player
 
-      var enemy_x = 0;
-      var enemy_y = 0;
-      var EnemyImg = new Image();
-      EnemyImg.src = "https://toppng.com/uploads/preview/2-3-4-enemy-spaceship-5-background-6-bullet-top-down-view-spaceshi-11563040481pwpyztbvjs.png";  // The enemy
+ var enemy_x = 0;
+ var enemy_y = 0;
+ var EnemyImg = new Image();
+ EnemyImg.src = "https://toppng.com/uploads/preview/2-3-4-enemy-spaceship-5-background-6-bullet-top-down-view-spaceshi-11563040481pwpyztbvjs.png";  // The enemy
 
-      var score = 0;
-      var enemy_speed = 3;
-      var FPS = 60;                        // How many frames per second
-      var time_remaining = 20;
+ var score = 0;
+ var enemy_speed = 3;
+ var FPS = 60;                        // How many frames per second
+ var time_remaining = 20;
 
 
-      function restart_game() {
-          // This gets called when the 'S' key is pressed and just sets 
-          // some important variables back to the start.
+ function restart_game() {
+     // This gets called when the 'S' key is pressed and just sets 
+     // some important variables back to the start.
+     //
+     // Alternatively they could just reload the page
+     time_remaining = 300;
+     score = 0;
+     enemy_speed = 3;
+     }
+
+ function ImagesTouching(x1, y1, img1, x2, y2, img2) {
           //
           // Alternatively they could just reload the page
           time_remaining = 300;
           score = 0;
-          enemy_speed = 3;
+          melon_speed = 3;
           }
 
-      function ImagesTouching(x1, y1, img1, x2, y2, img2) {
-                //
-                // Alternatively they could just reload the page
-                time_remaining = 300;
-                score = 0;
-                melon_speed = 3;
-                }
-
-      function ImagesTouching(x1, y1, img1, x2, y2, img2) {
+    function ImagesTouching(x1, y1, img1, x2, y2, img2) {
                 //
                 // This function detects whether two images are touching - very useful function
                 // 
@@ -68,47 +68,47 @@
                 }
 
 
-      ship_y = myCanvas.height - ShipImg.height;                              // ensure bug always at bottom of canvas
-      ctx.drawImage(ShipImg, ship_x, ship_y);                                  // and draw it
+    ship_y = myCanvas.height - ShipImg.height;                              // ensure bug always at bottom of canvas
+    ctx.drawImage(ShipImg, ship_x, ship_y);                                  // and draw it
 
-      ctx.fillStyle= "purple";
-      ctx.font = "20px Arial";
-      ctx.fillText("Score: " + score, 0, 20);                               // display the score
-
-
-      enemy_y = enemy_y + enemy_speed;                                // move the enemy down the screen
-
-      if (enemy_y > myCanvas.height) {                                // if it's gone past the bottom
-          enemy_y= 0;                                                 // move it back to the top
-          enemy_x= Math.random() * (myCanvas.width - EnemyImg.width); // pick a random x-position, always fully visible
-          }   
-            
-
-      ctx.drawImage(EnemyImg, enemy_x, enemy_y);                            // draw the enemy
-
-      if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {  // check for touching
-          score= score + 1;                                                    // add one to score
-          enemy_speed = enemy_speed + 0.5;                                     // and make it fall a bit faster
-          enemy_x= -EnemyImg.width;                                            // hide the enemy so the score doesn't rocket
-          }
-
-        addEventListener("keydown", MyKeyDownHandler);                      // listen for keystrokes  
+          ctx.fillStyle= "purple";
+          ctx.font = "20px Arial";
+          ctx.fillText("Score: " + score, 0, 20);                               // display the score
 
 
-      function MyKeyDownHandler (MyEvent) { 
+          enemy_y = enemy_y + enemy_speed;                                // move the enemy down the screen
+
+          if (enemy_y > myCanvas.height) {                                // if it's gone past the bottom
+              enemy_y= 0;                                                 // move it back to the top
+              enemy_x= Math.random() * (myCanvas.width - EnemyImg.width); // pick a random x-position, always fully visible
+              }   
+          
+
+    ctx.drawImage(EnemyImg, enemy_x, enemy_y);                            // draw the enemy
+
+    if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {  // check for touching
+        score= score + 1;                                                    // add one to score
+        enemy_speed = enemy_speed + 0.5;                                     // and make it fall a bit faster
+        enemy_x= -EnemyImg.width;                                            // hide the enemy so the score doesn't rocket
+        }
+
+      addEventListener("keydown", MyKeyDownHandler);                      // listen for keystrokes  
+
+
+ function MyKeyDownHandler (MyEvent) { 
         if (MyEvent.keyCode == 37 && ship_x > 0) {ship_x = ship_x - 1;}                             // left
         if (MyEvent.keyCode == 39 && ship_x+ShipImg.width < myCanvas.width) {ship_x = ship_x+1;}    // right
         if (MyEvent.keyCode == 87 && ship_y > 0) {ship_y = ship_y - 10;}                            // left
         if (MyEvent.keyCode == 83 && ship_y+ShipImg.height < myCanvas.height) {ship_y = ship_y+10;} // right
         if (MyEvent.keyCode == 82) restart_game();                                                  // R to restart 
-        MyEvent.preventDefault();
-        }
+   MyEvent.preventDefault();
+   }
 
-      addEventListener("keydown", MyKeyDownHandler);                      // listen for keystrokes  
+ addEventListener("keydown", MyKeyDownHandler);                      // listen for keystrokes  
 
-      myCanvas.width = window.innerWidth - 20;                            // fill the entire browser width
-      myCanvas.height = window.innerHeight - 20;                          // fill the entire browser height
+ myCanvas.width = window.innerWidth - 20;                            // fill the entire browser width
+ myCanvas.height = window.innerHeight - 20;                          // fill the entire browser height
 
-    </script>
-  </body>
+</script>
+</body>
 </html>

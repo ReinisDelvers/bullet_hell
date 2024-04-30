@@ -4,9 +4,16 @@
   </head>
 
   <body>
-    <canvas id="myCanvas" width=200 height=400 style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover"></canvas> 
+
+    <canvas id="myCanvas"  style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover; height: 98vh; width: 65vh;"></canvas> 
     
+  
+
     <script>
+
+    var score = 0;
+      var FPS = 60;           // How many frames per second
+      var time_remaining = 20;
 
       var ship_x = 0;
       var ship_y = 0;
@@ -17,11 +24,9 @@
       var enemy_y = 0;
       var EnemyImg = new Image();
       EnemyImg.src = "https://toppng.com/uploads/preview/2-3-4-enemy-spaceship-5-background-6-bullet-top-down-view-spaceshi-11563040481pwpyztbvjs.png";  // The enemy
-
-      var score = 0;
       var enemy_speed = 3;
-      var FPS = 60;           // How many frames per second
-      var time_remaining = 20;
+
+
 
       function restart_game() {
         // This gets called when the 'R' key is pressed and just sets 
@@ -44,7 +49,7 @@
       ctx.font = "20px Arial";
       ctx.fillText("Score: " + score, 0, 20);           // display the score
 
- 
+
             
       ctx.drawImage(EnemyImg, enemy_x, enemy_y);           // draw the enemy
 
@@ -67,5 +72,6 @@
       }
 
     </script>
+
   </body>
 </html>

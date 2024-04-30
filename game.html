@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8"/>
     <title> Space Bullet Hell </title>
   </head>
 
@@ -7,23 +9,25 @@
 
     <canvas id="myCanvas"  style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover; height: 98vh; width: 65vh;"></canvas> 
     
-  
-
     <script>
 
+
+      var ctx = myCanvas.getContext("2d");
+
+
     var score = 0;
-      var FPS = 60;           // How many frames per second
+      var FPS = 1000;           // How many frames per second
       var time_remaining = 20;
 
-      var ship_x = 0;
-      var ship_y = 0;
-      var ShipImg = new Image();
-      ShipImg.src = "https://preview.redd.it/kfctkbq1zhb61.png?width=250&format=png&auto=webp&s=0037e6fa2d03fda3752e8192fe1c3ef780440747";         // The player
+      var ship_x = 100;
+      var ship_y = 50;
+      var ShipImg = new Image(50,50);
+      ShipImg.src = "./Bildes/coin.png";         // The player
 
       var enemy_x = 0;
       var enemy_y = 0;
-      var EnemyImg = new Image();
-      EnemyImg.src = "https://toppng.com/uploads/preview/2-3-4-enemy-spaceship-5-background-6-bullet-top-down-view-spaceshi-11563040481pwpyztbvjs.png";  // The enemy
+      var EnemyImg = new Image(50,50);
+      EnemyImg.src = "./Bildes/ship.png";  // The enemy
       var enemy_speed = 3;
 
 
@@ -42,33 +46,38 @@
         return true;           // otherwise, overlap   
       }
 
-      ctx.drawImage(ShipImg, ship_x, ship_y);           //  draw ship
+      function Do_a_Frame(){
+        ctx.drawImage(ShipImg, ship_x, ship_y, ShipImg.width, ShipImg.height);           //  draw ship
 
-      ctx.fillStyle= "purple";
-      ctx.font = "20px Arial";
-      ctx.fillText("Score: " + score, 0, 20);           // display the score
+        ctx.fillStyle= "purple";
+        ctx.font = "20px Arial";
+        ctx.fillText("Score: " + score, 0, 20);           // display the score
 
 
-            
-      ctx.drawImage(EnemyImg, enemy_x, enemy_y);           // draw the enemy
+              
+        ctx.drawImage(EnemyImg, enemy_x, enemy_y, EnemyImg.width, EnemyImg.height);           // draw the enemy
+        if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {           // check for touching
+          score= score - 1;           // subtract one to score
+          enemy_speed = enemy_speed + 0.5;           // and make it fall a bit faster
+          enemy_x= -EnemyImg.width;           // hide the enemy so the score doesn't rocket
+        }
+      }
+      
+      setInterval(Do_a_Frame, 1000/FPS);   
 
-      if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {           // check for touching
-        score= score - 1;           // subtract one to score
-        enemy_speed = enemy_speed + 0.5;           // and make it fall a bit faster
-        enemy_x= -EnemyImg.width;           // hide the enemy so the score doesn't rocket
+      function MyKeyDownHandler (MyEvent) { 
+        if (MyEvent.keyCode == 37 && ship_x > 0) {ship_x = ship_x - 3;}           // left
+        if (MyEvent.keyCode == 39 && ship_x+ShipImg.width < myCanvas.width) {ship_x = ship_x+3;}           // right
+        if (MyEvent.keyCode == 38 && ship_y > 0) {ship_y = ship_y - 3;}           // left
+        if (MyEvent.keyCode == 40 && ship_y+ShipImg.height < myCanvas.height) {ship_y = ship_y+3;}           // right
+        if (MyEvent.keyCode == 82) restart_game();           // R to restart 
+        MyEvent.preventDefault();
       }
 
       addEventListener("keydown", MyKeyDownHandler);           // listen for keystrokes  
 
-
-      function MyKeyDownHandler (MyEvent) { 
-        if (MyEvent.keyCode == 37 && ship_x > 0) {ship_x = ship_x - 1;}           // left
-        if (MyEvent.keyCode == 39 && ship_x+ShipImg.width < myCanvas.width) {ship_x = ship_x+1;}           // right
-        if (MyEvent.keyCode == 87 && ship_y > 0) {ship_y = ship_y - 10;}           // left
-        if (MyEvent.keyCode == 83 && ship_y+ShipImg.height < myCanvas.height) {ship_y = ship_y+10;}           // right
-        if (MyEvent.keyCode == 82) restart_game();           // R to restart 
-        MyEvent.preventDefault();
-      }
+      myCanvas.width = window.innerWidth-20;                            // fill the entire browser width
+      myCanvas.height = window.innerHeight-20;                          // fill the entire browser height
 
     </script>
 

@@ -19,16 +19,24 @@
       var FPS = 1000;           // How many frames per second
       var time_remaining = 20;
 
-      var ship_x = 100;
-      var ship_y = 50;
+      var ship_x = 0;
+      var ship_y = 0;
       var ShipImg = new Image(50,50);
       ShipImg.src = "./Bildes/coin.png";         // The player
+      var ship_speed = 0;
+      var ship_health = 0;
+      var ship_side_speed = 0;
+      var ship_shield = 0;
+      var ship_damage = 0; 
 
       var enemy_x = 0;
       var enemy_y = 0;
       var EnemyImg = new Image(50,50);
       EnemyImg.src = "./Bildes/ship.png";  // The enemy
       var enemy_speed = 3;
+      var enemy_side_speed = 0;
+      var enemy_health = 0;
+      var enemy_damage = 0;
 
 
       function restart_game() {

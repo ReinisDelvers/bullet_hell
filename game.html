@@ -15,12 +15,12 @@
       var ctx = myCanvas.getContext("2d");
 
 
-    var score = 0;
-      var FPS = 1000;           // How many frames per second
+      var score = 123456;
+      var FPS = 60;           // How many frames per second
       var time_remaining = 20;
 
-      var ship_x = 0;
-      var ship_y = 0;
+      var ship_x = 100;
+      var ship_y = 200;
       var ShipImg = new Image(50,50);
       ShipImg.src = "./Bildes/coin.png";         // The player
       var ship_speed = 0;
@@ -29,8 +29,8 @@
       var ship_shield = 0;
       var ship_damage = 0; 
 
-      var enemy_x = 0;
-      var enemy_y = 0;
+      var enemy_x = 200;
+      var enemy_y = 100;
       var EnemyImg = new Image(50,50);
       EnemyImg.src = "./Bildes/ship.png";  // The enemy
       var enemy_speed = 3;
@@ -40,12 +40,8 @@
 
 
       function restart_game() {
-        // This gets called when the 'R' key is pressed and just sets 
-        // some important variables back to the start.
-        // Alternatively they could just reload the page
         time_remaining = 300;
         score = 0;
-        enemy_speed = 3;
       }
 
       function ImagesTouching(x1, y1, img1, x2, y2, img2) {           // This function detects whether two images are touching - very useful function
@@ -55,14 +51,17 @@
       }
 
       function Do_a_Frame(){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); 
+
         ctx.drawImage(ShipImg, ship_x, ship_y, ShipImg.width, ShipImg.height);           //  draw ship
+  
+
 
         ctx.fillStyle= "purple";
         ctx.font = "20px Arial";
         ctx.fillText("Score: " + score, 0, 20);           // display the score
 
 
-              
         ctx.drawImage(EnemyImg, enemy_x, enemy_y, EnemyImg.width, EnemyImg.height);           // draw the enemy
         if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) {           // check for touching
           score= score - 1;           // subtract one to score
@@ -84,8 +83,8 @@
 
       addEventListener("keydown", MyKeyDownHandler);           // listen for keystrokes  
 
-      myCanvas.width = window.innerWidth-20;                            // fill the entire browser width
-      myCanvas.height = window.innerHeight-20;                          // fill the entire browser height
+      myCanvas.width = window.innerWidth;                            // fill the entire browser width
+      myCanvas.height = window.innerHeight;                          // fill the entire browser height
 
     </script>
 

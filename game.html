@@ -6,93 +6,125 @@
 </head>
 
 <body>
+    <canvas id="canvas" style="background:url('./Bildes/Backround.png'); margin: auto; display: block; height: 98vh; width: 65vh;"></canvas>
 
-<canvas id="myCanvas" style="background:url('https://t3.ftcdn.net/jpg/02/64/27/90/360_F_264279006_WDXxV3OHjAOoHqH7iiLDrg23p0947g7U.jpg'); background-size: cover; height: 98vh; width: 65vh;"></canvas>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
 
-<script>
-    var ctx = myCanvas.getContext("2d");
+        canvas.width = window.innerWidth * 0.65;
+        canvas.height = window.innerHeight * 0.98;
 
-    var score = 123456;
-    var FPS = 60; // How many frames per second
-    var time_remaining = 20;
+        var shipImg = new Image;
+        shipImg.src = "./Bildes/Ship1.2.png";
+        var shipWidth = 128;
+        var shipHeight = 128;
+        var ship_x = (canvas.width-shipWidth)/2;
+        var ship_y = canvas.height-shipHeight;
+        var ship_speed = 3;
+        var ship_health = 0;
+        var ship_side_speed = 0;
+        var ship_shield = 0;
+        var ship_damage = 0;
+        var ship_bullet_speed = 0;
 
-    var ship_x = 100;
-    var ship_y = 200;
-    var ShipImg = new Image(50, 50);
-    ShipImg.src = "./Bildes/coin.png"; // The player
-    var ship_speed = 0;
-    var ship_health = 0;
-    var ship_side_speed = 0;
-    var ship_shield = 0;
-    var ship_damage = 0;
+        var enemy1Img = new Image;
+        enemy1Img.src = "./Bildes/Enemy/Enemy1.2.png"; 
+        var enemy1Width = 250;
+        var enemy1Height = 256;
+        var enemy1_x = (canvas.width-enemy1Width)/2;
+        var enemy1_y = 20;
+        var enemy1_speed = 0;
+        var enemy1_side_speed = 0;
+        var enemy1health = 0;
+        var enemy1_damage = 0;
+        var enemy1_bullet_speed = 0;
 
-    var enemy_x = 200;
-    var enemy_y = 100;
-    var EnemyImg = new Image(50, 50);
-    EnemyImg.src = "./Bildes/ship.png"; // The enemy
-    var enemy_speed = 3;
-    var enemy_side_speed = 0;
-    var enemy_health = 0;
-    var enemy_damage = 0;
+        // var enemyImg = new Image;
+        // enemyImg.src = ""; 
+        // var enemyWidth = 0;
+        // var enemyHeight = 0;
+        // var enemy_x = 0;
+        // var enemy_y = 0;
+        // var enemy_speed = 0;
+        // var enemy_side_speed = 0;
+        // var enemy_health = 0;
+        // var enemy_damage = 0;
+        // var enemy_bullet_speed = 0;
 
-    function restart_game() {
-        time_remaining = 300;
-        score = 0;
-    }
+        // var score = 123456;
+        // var time_remaining = 300;
 
-    function ImagesTouching(x1, y1, img1, x2, y2, img2) { // This function detects whether two images are touching - very useful function
-        if (x1 >= x2 + img2.width || x1 + img1.width <= x2) return false; // too far to the side
-        if (y1 >= y2 + img2.height || y1 + img1.height <= y2) return false; // too far above/below
-        return true; // otherwise, overlap
-    }
 
-    function Do_a_Frame() {
-        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        // function restart_game() {
+        //     time_remaining = 300;
+        //     score = 0;
+        // }
 
-        ctx.drawImage(ShipImg, ship_x, ship_y, ShipImg.width, ShipImg.height); //  draw ship
 
-        ctx.fillStyle = "purple";
-        ctx.font = "20px Arial";
-        ctx.fillText("Score: " + score, 0, 20); // display the score
+   
 
-        ctx.drawImage(EnemyImg, enemy_x, enemy_y, EnemyImg.width, EnemyImg.height); // draw the enemy
-        if (ImagesTouching(ship_x, ship_y, ShipImg, enemy_x, enemy_y, EnemyImg)) { // check for touching
-            score = score - 1; // subtract one from score
-            enemy_speed = enemy_speed + 0.5; // and make it fall a bit faster
-            enemy_x = -EnemyImg.width; // hide the enemy so the score doesn't skyrocket
+        document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("keyup", handleKeyUp);
+
+        var keys = {}; 
+
+        function handleKeyDown(event) {
+            keys[event.key] = true;
         }
-    }
 
-    function animate() {
-        Do_a_Frame();
-        requestAnimationFrame(animate);
-    }
+        function handleKeyUp(event) {
+            keys[event.key] = false;
+        }
 
-    animate();
+        function update() {
+            // Controls
+            if (keys['w']) { // Move up
+                ship_y -= ship_speed;
+            }
+            if (keys['s']) { // Move down
+                ship_y += ship_speed;
+            }
+            if (keys['a']) { // Move left
+                ship_x -= ship_speed;
+            }
+            if (keys['d']) { // Move right
+                ship_x += ship_speed;
+            }
 
-    function MyKeyDownHandler(MyEvent) {
-        if (MyEvent.keyCode == 37 && ship_x > 0) {
-            ship_x = ship_x - 3;
-        } // left
-        if (MyEvent.keyCode == 39 && ship_x + ShipImg.width < myCanvas.width) {
-            ship_x = ship_x + 3;
-        } // right
-        if (MyEvent.keyCode == 38 && ship_y > 0) {
-            ship_y = ship_y - 3;
-        } // up
-        if (MyEvent.keyCode == 40 && ship_y + ShipImg.height < myCanvas.height) {
-            ship_y = ship_y + 30;
-        } // down
-        if (MyEvent.keyCode == 82) restart_game(); // R to restart
-        MyEvent.preventDefault();
-    }
+            if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
+                ship_x = -20;
+            } else if (ship_x > canvas.width - shipWidth + 20) {
+                ship_x = canvas.width - shipWidth + 20;
+            } if (ship_y < 0) {     //Keeps ship within the y canvas boundaries
+                ship_y = 0;
+            } else if (ship_y > canvas.height - shipHeight) {
+                ship_y = canvas.height - shipHeight;
+            }
+        }
 
-    addEventListener("keydown", MyKeyDownHandler); // listen for keystrokes
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            console.log("Canvas height: " + canvas.height)
+            console.log("Canvas width: " + canvas.width)
 
-    myCanvas.width = window.innerWidth; // fill the entire browser width
-    myCanvas.height = window.innerHeight; // fill the entire browser height
+            ctx.drawImage(shipImg, ship_x, ship_y);
+            console.log("Ship height: " + shipImg.height)
+            console.log("Ship width: " + shipImg.width)
 
-</script>
+            
+            ctx.drawImage(enemy1Img, enemy1_x, enemy1_y);
+            console.log("Enemy1 height: " + enemy1Img.height)
+            console.log("Enemy1 width: " + enemy1Img.width)
+        }
 
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
 </body>
 </html>

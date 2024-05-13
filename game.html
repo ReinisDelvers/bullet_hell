@@ -62,7 +62,19 @@
         // }
 
 
-   
+
+
+
+        // raimja mēģinājumi 
+
+        //var HealthBar = new Image;
+        //HealthBar.src = "./Bildes/HeartFull.png";
+        //var HealthHeight = 30;
+        //var HealthWidth = 30;
+        //var Health_x = (canvas.width-HealthWidth)/2;
+        //var Health_y = canvas.height-HealthHeight;
+            
+        //padevos
 
         document.addEventListener("keydown", handleKeyDown);
         document.addEventListener("keyup", handleKeyUp);
@@ -116,6 +128,15 @@
             ctx.drawImage(enemy1Img, enemy1_x, enemy1_y);
             console.log("Enemy1 height: " + enemy1Img.height)
             console.log("Enemy1 width: " + enemy1Img.width)
+
+
+            //ctx.drawImage(HealthBar, Health_x, Health_y);
+            //console.log("HealthBar height: " + HealthHeight)
+            //console.log("HealthBar width: " + HealthWidth)
+
+            //KAPĒC ŠITAS NESTRĀDĀAAAAAAAAAAAAAAAAA????????????????????????????????????????????????
+            //JEBAL JAU
+            
         }
 
         function gameLoop() {
@@ -125,6 +146,7 @@
         }
 
         gameLoop();
+
     </script>
 </body>
 </html>

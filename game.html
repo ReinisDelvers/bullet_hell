@@ -9,6 +9,16 @@
     <canvas id="canvas" style="background:url('./Bildes/Backround.png'); margin: auto; display: block; height: 98vh; width: 65vh;"></canvas>
 
     <script>
+        class Bullet{
+            constructor(sakuma_x, sakuma_y){
+                this.PlayerBulletImg = new Image;
+                this.PlayerBulletImg.src = "./Bildes/PlayerBullet.png";
+                this.bullet_x = sakuma_x;
+                this.bullet_y = sakuma_y;
+            }            
+        }
+
+        var lodes = [];
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
 
@@ -41,11 +51,10 @@
         var enemy1_damage = 0;
         var enemy1_bullet_speed = 0;
 
-        var PlayerBulletImg = new Image;
-        PlayerBulletImg.src = "./Bildes/PlayerBullet.png";
+
         var IsPlayerShooting = 0;
-        var  PlayerBullet_x = 0;
-        var  PlayerBullet_y = 0;
+        var  PlayerBullet_x = 100;
+        var  PlayerBullet_y = 100;
 
         // var enemyImg = new Image;
         // enemyImg.src = ""; 
@@ -118,8 +127,10 @@
             if (keys['d']) { // Move right
                 ship_x += ship_speed;
             }
-            if (keys['space']) {// shoot 
-                IsPlayerShooting = 1;
+            if (keys[' ']) {// shoot 
+                lodes.push(new Bullet(ship_x, ship_y));
+                // IsPlayerShooting = 1;
+                // console.log("IsPlayerShooting: " + IsPlayerShooting);
             }
 
             if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
@@ -135,33 +146,46 @@
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            console.log("Canvas height: " + canvas.height)
-            console.log("Canvas width: " + canvas.width)
+            // console.log("Canvas height: " + canvas.height)
+            // console.log("Canvas width: " + canvas.width)
 
             ctx.drawImage(shipImg, ship_x, ship_y);
-            console.log("Ship height: " + shipImg.height)
-            console.log("Ship width: " + shipImg.width)
+            // console.log("Ship height: " + shipImg.height)
+            // console.log("Ship width: " + shipImg.width)
 
             
             ctx.drawImage(enemy1Img, enemy1_x, enemy1_y);
-            console.log("Enemy1 height: " + enemy1Img.height)
-            console.log("Enemy1 width: " + enemy1Img.width)
+            // console.log("Enemy1 height: " + enemy1Img.height)
+            // console.log("Enemy1 width: " + enemy1Img.width)
 
             for(var i=0;i<ship_healthMAX;i++){
                 ctx.drawImage(HealthBar, Health_x +(i*30), Health_y);
-                console.log("HealthBar height: " + HealthHeight)
-                console.log("HealthBar width: " + HealthWidth)
+                // console.log("HealthBar height: " + HealthBar.height)
+                // console.log("HealthBar width: " + HealthBar.width)
             }
             for(var j=ship_healthMAX;j>ship_healthCurrent;j--){
                 ctx.drawImage(EmptyHP, Health_x +(j*30), Health_y);
-                console.log("EmptyHP height: " + HealthHeight)
-                console.log("EmptyHP width: " + HealthWidth)
+                // console.log("EmptyHP height: " + EmptyHP.height)
+                // console.log("EmptyHP width: " + EmptyHP.width)
             }
           
-
-            if (IsPlayerShooting == 1) {
-                ctx.drawImage(PlayerBulletImg, PlayerBullet_x, PlayerBullet_y);
+            for(lode in lodes){
+                ctx.drawImage(lodes[lode].PlayerBulletImg, lodes[lode].bullet_x, lodes[lode].bullet_y);
+                lodes[lode].bullet_y -=1;
+                if (lodes[lode].bullet_y<=20){
+                    delete lodes[lode];
+                }
             }
+
+
+
+            // if (IsPlayerShooting == 1) {
+            //     ctx.drawImage(PlayerBulletImg, PlayerBullet_x, PlayerBullet_y);
+            //     console.log("PlayerBulletImg height: " + PlayerBulletImg.height)
+            //     console.log("PlayerBulletImg width: " + PlayerBulletImg.width)
+            //     PlayerBullet_y = PlayerBullet_y+1;
+            //     IsPlayerShooting = 0;
+            // }
 
             //KAPĒC ŠITAS NESTRĀDĀAAAAAAAAAAAAAAAAA????????????????????????????????????????????????
             //JEBAL JAU

@@ -15,6 +15,21 @@
         canvas.width = window.innerWidth * 0.65;
         canvas.height = window.innerHeight * 0.98;
 
+        var HealthUp = 5;
+        var ShieldUp = 5;
+        var DamageUP = 10;
+
+        // if buyShield{
+        //     ship_shieldMAX++;
+        //     ship_shieldCurrent++;
+        //     ShieldUp--;
+        // }
+        // if buyHealth{
+        //     ship_healthMAX++;
+        //     ship_healthCurrent++;
+        //     HealthUP--;
+        // }
+
         var shipImg = new Image;
         shipImg.src = "./Bildes/Ship1.2.png";
         var shipWidth = 128;
@@ -23,9 +38,10 @@
         var ship_y = canvas.height-shipHeight;
         var ship_speed = 3;
         var ship_healthMAX = 10;
-        var ship_healthCurrent = 10;
+        var ship_healthCurrent = 7;
         var ship_side_speed = 0;
-        var ship_shield = 0;
+        var ship_shieldMAX = 5;
+        var ship_shieldCurrent = 2;
         var ship_damage = 0;
         var ship_bullet_speed = 0;
 
@@ -67,6 +83,11 @@
 
 
         // raimja mēģinājumi 
+            var HealthHeight = 30;
+            var HealthWidth = 30;
+            var Health_x = (canvas.width-HealthWidth)/2;
+            var Health_y = canvas.height-HealthHeight;
+
             //full hp
             var HealthBar = new Image;
             HealthBar.src = "./Bildes/HeartFull.png";
@@ -75,14 +96,19 @@
             var EmptyHP = new Image;
             EmptyHP.src = "./Bildes/HeartEmpty.png";
 
-        var HealthHeight = 30;
-        var HealthWidth = 30;
-        var Health_x = (canvas.width-HealthWidth)/2;
-        var Health_y = canvas.height-HealthHeight;
-            
-        //padevos
+            //full shield
+            var ShieldFull = new Image;
+            ShieldFull.src = "./Bildes/ShieldFull.png";
 
-    
+            //empty shield
+            var ShieldEmpty = new Image;
+            ShieldEmpty.src = "./Bildes/ShieldEmpty.png";
+
+            var ShieldHeight = 32;
+            var ShieldWidth = 26;
+
+ 
+
         
 
         document.addEventListener("keydown", handleKeyDown);
@@ -112,9 +138,6 @@
             if (keys['d']) { // Move right
                 ship_x += ship_speed;
             }
-            if (keys['space']) {// shoot 
-                
-            }
 
             if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
                 ship_x = -20;
@@ -141,20 +164,25 @@
             console.log("Enemy1 height: " + enemy1Img.height)
             console.log("Enemy1 width: " + enemy1Img.width)
 
-            for(var i=0;i<ship_healthMAX;i++){
-                ctx.drawImage(HealthBar, Health_x +(i*30), Health_y);
-                console.log("HealthBar height: " + HealthHeight)
-                console.log("HealthBar width: " + HealthWidth)
+            //hp
+            for(var i=1;i<ship_healthMAX;i++){
+                ctx.drawImage(HealthBar, Health_x +(i*30), Health_y - 40);
+
             }
             for(var j=ship_healthMAX;j>ship_healthCurrent;j--){
-                ctx.drawImage(EmptyHP, Health_x +(j*30), Health_y);
-                console.log("EmptyHP height: " + HealthHeight)
-                console.log("EmptyHP width: " + HealthWidth)
+                ctx.drawImage(EmptyHP, Health_x +(j*30), Health_y - 40);
+    
             }
-          
+            //shield
+            for(var k=1;k<ship_shieldMAX;k++){
+                console.log("asdasdg");
+                ctx.drawImage(ShieldFull, Health_x +(k*26), Health_y - 8);
 
-            //KAPĒC ŠITAS NESTRĀDĀAAAAAAAAAAAAAAAAA????????????????????????????????????????????????
-            //JEBAL JAU
+            }
+            for(var l=ship_shieldMAX;l>ship_shieldCurrent;l--){
+                ctx.drawImage(ShieldEmpty, Health_x +(l*26), Health_y - 8);
+
+            }
             
         }
 

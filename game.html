@@ -22,7 +22,8 @@
         var ship_x = (canvas.width-shipWidth)/2;
         var ship_y = canvas.height-shipHeight;
         var ship_speed = 3;
-        var ship_health = 0;
+        var ship_healthMAX = 10;
+        var ship_healthCurrent = 10;
         var ship_side_speed = 0;
         var ship_shield = 0;
         var ship_damage = 0;
@@ -72,15 +73,23 @@
 
 
         // raimja mēģinājumi 
+            //full hp
+            var HealthBar = new Image;
+            HealthBar.src = "./Bildes/HeartFull.png";
 
-        var HealthBar = new Image;
-        HealthBar.src = "./Bildes/HeartFull.png";
+            //empty hp   
+            var EmptyHP = new Image;
+            EmptyHP.src = "./Bildes/HeartEmpty.png";
+
         var HealthHeight = 30;
         var HealthWidth = 30;
         var Health_x = (canvas.width-HealthWidth)/2;
         var Health_y = canvas.height-HealthHeight;
             
         //padevos
+
+    
+        
 
         document.addEventListener("keydown", handleKeyDown);
         document.addEventListener("keyup", handleKeyUp);
@@ -138,10 +147,17 @@
             console.log("Enemy1 height: " + enemy1Img.height)
             console.log("Enemy1 width: " + enemy1Img.width)
 
-
-            ctx.drawImage(HealthBar, Health_x, Health_y);
-            console.log("HealthBar height: " + HealthHeight)
-            console.log("HealthBar width: " + HealthWidth)
+            for(var i=0;i<ship_healthMAX;i++){
+                ctx.drawImage(HealthBar, Health_x +(i*30), Health_y);
+                console.log("HealthBar height: " + HealthHeight)
+                console.log("HealthBar width: " + HealthWidth)
+            }
+            for(var j=ship_healthMAX;j>ship_healthCurrent;j--){
+                ctx.drawImage(EmptyHP, Health_x +(j*30), Health_y);
+                console.log("EmptyHP height: " + HealthHeight)
+                console.log("EmptyHP width: " + HealthWidth)
+            }
+          
 
             if (IsPlayerShooting == 1) {
                 ctx.drawImage(PlayerBulletImg, PlayerBullet_x, PlayerBullet_y);

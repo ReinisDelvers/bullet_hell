@@ -40,6 +40,12 @@
         var enemy1_damage = 0;
         var enemy1_bullet_speed = 0;
 
+        var PlayerBulletImg = new Image;
+        PlayerBulletImg.src = "./Bildes/PlayerBullet.png";
+        var IsPlayerShooting = 0;
+        var  PlayerBullet_x = 0;
+        var  PlayerBullet_y = 0;
+
         // var enemyImg = new Image;
         // enemyImg.src = ""; 
         // var enemyWidth = 0;
@@ -104,7 +110,7 @@
                 ship_x += ship_speed;
             }
             if (keys['space']) {// shoot 
-                
+                IsPlayerShooting = 1;
             }
 
             if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
@@ -136,6 +142,10 @@
             ctx.drawImage(HealthBar, Health_x, Health_y);
             console.log("HealthBar height: " + HealthHeight)
             console.log("HealthBar width: " + HealthWidth)
+
+            if (IsPlayerShooting == 1) {
+                ctx.drawImage(PlayerBulletImg, PlayerBullet_x, PlayerBullet_y);
+            }
 
             //KAPĒC ŠITAS NESTRĀDĀAAAAAAAAAAAAAAAAA????????????????????????????????????????????????
             //JEBAL JAU

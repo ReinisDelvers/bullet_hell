@@ -4,30 +4,26 @@
     <meta charset="utf-8"/>
     <title>Space Bullet Hell</title>
 </head>
-
 <body>
     <canvas id="canvas" style="background:url('./Bildes/Backround.png'); margin: auto; display: block; height: 98vh; width: 65vh;"></canvas>
-
     <script>
-        class Bullet{
-            constructor(sakuma_x, sakuma_y){
-                this.PlayerBulletImg = new Image;
+        class Bullet {
+            constructor(sakuma_x, sakuma_y) {
+                this.PlayerBulletImg = new Image();
                 this.PlayerBulletImg.src = "./Bildes/PlayerBullet.png";
                 this.bullet_x = sakuma_x;
                 this.bullet_y = sakuma_y;
             }            
         }
 
-        class Bullet2{
-            constructor(sakuma_x, sakuma_y){
-                this.PlayerBulletImg = new Image;
+        class Bullet2 {
+            constructor(sakuma_x, sakuma_y) {
+                this.PlayerBulletImg = new Image();
                 this.PlayerBulletImg.src = "./Bildes/EnemyBullet.png";
                 this.bullet_x = sakuma_x;
                 this.bullet_y = sakuma_y;
             }            
         }
-
-        
 
         var lodes = [];
         const canvas = document.getElementById("canvas");
@@ -40,117 +36,52 @@
         var ShieldUp = 5;
         var DamageUP = 10;
 
-        // if buyShield{
-        //     ship_shieldMAX++;
-        //     ship_shieldCurrent++;
-        //     ShieldUp--;
-        // }
-        // if buyHealth{
-        //     ship_healthMAX++;
-        //     ship_healthCurrent++;
-        //     HealthUP--;
-        // }
-
-        var shipImg = new Image;
+        var shipImg = new Image();
         shipImg.src = "./Bildes/Ship1.2.png";
         var shipWidth = 96;
         var shipHeight = 128;
-        var ship_x = (canvas.width-shipWidth)/2;
-        var ship_y = canvas.height-shipHeight;
-        var ship_speed = 3;
+        var ship_x = (canvas.width - shipWidth) / 2;
+        var ship_y = canvas.height - shipHeight;
+        var ship_speed = 9;
         var ship_healthMAX = 10;
-        var ship_healthCurrent = 7;
+        var ship_healthCurrent = 10;
         var ship_side_speed = 0;
         var ship_shieldMAX = 5;
         var ship_shieldCurrent = 2;
         var ship_damage = 0;
         var ship_bullet_speed = 0;
+        var ship_last_shot = 0;
 
-        var ship2Img = new Image;
+        var ship2Img = new Image();
         ship2Img.src = "./Bildes/Ship1.3.png";
         var ship2Width = 96;
         var ship2Height = 128;
-        var ship2_x = (canvas.width-shipWidth)/2;
-        var ship2_y = canvas.height-shipHeight;
-        var ship2_speed = 3;
+        var ship2_x = (canvas.width - shipWidth) / 2;
+        var ship2_y = 0; // Place ship2 at the top of the canvas
+        var ship2_speed = 9;
         var ship2_healthMAX = 10;
-        var ship2_healthCurrent = 7;
+        var ship2_healthCurrent = 10;
         var ship2_side_speed = 0;
         var ship2_shieldMAX = 5;
         var ship2_shieldCurrent = 2;
         var ship2_damage = 0;
         var ship2_bullet_speed = 0;
-
-        // var enemy1Img = new Image;
-        // enemy1Img.src = "./Bildes/Enemy/Enemy1.2.png"; 
-        // var enemy1Width = 250;
-        // var enemy1Height = 256;
-        // var enemy1_x = (canvas.width-enemy1Width)/2;
-        // var enemy1_y = 20;
-        // var enemy1_speed = 0;
-        // var enemy1_side_speed = 0;
-        // var enemy1health = 0;
-        // var enemy1_damage = 0;
-        // var enemy1_bullet_speed = 0;
-
+        var ship2_last_shot = 0;
 
         var IsPlayerShooting = 0;
-        var  PlayerBullet_x = 100;
-        var  PlayerBullet_y = 100;
+        var PlayerBullet_x = 100;
+        var PlayerBullet_y = 100;
 
-        // var enemyImg = new Image;
-        // enemyImg.src = ""; 
-        // var enemyWidth = 0;
-        // var enemyHeight = 0;
-        // var enemy_x = 0;
-        // var enemy_y = 0;
-        // var enemy_speed = 0;
-        // var enemy_side_speed = 0;
-        // var enemy_health = 0;
-        // var enemy_damage = 0;
-        // var enemy_bullet_speed = 0;
+        var HealthHeight = 30;
+        var HealthWidth = 30;
+        var Health_x = (canvas.width - HealthWidth) / 2;
+        var Health_y = canvas.height - HealthHeight;
 
-        // var score = 123456;
-        // var time_remaining = 300;
+        var HealthBar = new Image();
+        HealthBar.src = "./Bildes/HeartFull.png";
 
-
-        // function restart_game() {
-        //     time_remaining = 300;
-        //     score = 0;
-        // }
-
-
-
-
-
-        // raimja mēģinājumi 
-            var HealthHeight = 30;
-            var HealthWidth = 30;
-            var Health_x = (canvas.width-HealthWidth)/2;
-            var Health_y = canvas.height-HealthHeight;
-
-            //full hp
-            var HealthBar = new Image;
-            HealthBar.src = "./Bildes/HeartFull.png";
-
-            //empty hp   
-            var EmptyHP = new Image;
-            EmptyHP.src = "./Bildes/HeartEmpty.png";
-
-            // //full shield
-            // var ShieldFull = new Image;
-            // ShieldFull.src = "./Bildes/ShieldFull.png";
-
-            // //empty shield
-            // var ShieldEmpty = new Image;
-            // ShieldEmpty.src = "./Bildes/ShieldEmpty.png";
-
-            // var ShieldHeight = 32;
-            // var ShieldWidth = 26;
-
- 
-
-        
+        var EmptyHP = new Image();
+        EmptyHP.src = "./Bildes/HeartEmpty.png";
 
         document.addEventListener("keydown", handleKeyDown);
         document.addEventListener("keyup", handleKeyUp);
@@ -159,33 +90,50 @@
 
         function handleKeyDown(event) {
             keys[event.key] = true;
+
+            if (event.key === 'r' || event.key === 'R') { // Check if R key is pressed
+                resetGame(); // Call the reset function
+            }
         }
 
         function handleKeyUp(event) {
             keys[event.key] = false;
         }
 
+        function resetGame() {
+            // Reset ship1's properties
+            ship_x = (canvas.width - shipWidth) / 2;
+            ship_y = canvas.height - shipHeight;
+            ship_healthCurrent = ship_healthMAX;
+
+            // Reset ship2's properties
+            ship2_x = (canvas.width - shipWidth) / 2;
+            ship2_y = 0;
+            ship2_healthCurrent = ship2_healthMAX;
+
+            // Clear the bullets array
+            lodes = [];
+        }
+
         function update() {
-            // Controls
-            if (keys['w']) { // Move up
+            // Controls for ship1
+            if (keys['w'] && ship_healthCurrent > 0) { // Move up
                 ship_y -= ship_speed;
             }
-            if (keys['s']) { // Move down
+            if (keys['s'] && ship_healthCurrent > 0) { // Move down
                 ship_y += ship_speed;
             }
-            if (keys['a']) { // Move left
+            if (keys['a'] && ship_healthCurrent > 0) { // Move left
                 ship_x -= ship_speed;
             }
-            if (keys['d']) { // Move right
+            if (keys['d'] && ship_healthCurrent > 0) { // Move right
                 ship_x += ship_speed;
             }
-            if (keys[' ']) {// shoot 
-                lodes.push(new Bullet(ship_x, ship_y));
-                // IsPlayerShooting = 1;
-                // console.log("IsPlayerShooting: " + IsPlayerShooting);
+            if (keys[' '] && ship_healthCurrent > 0 && Date.now() - ship_last_shot > 500) { // shoot with delay
+                lodes.push(new Bullet(ship_x + shipWidth / 2, ship_y)); // Shoot from the center of the ship
+                ship_last_shot = Date.now();
             }
-
-            if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
+                    if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
                 ship_x = -20;
             } else if (ship_x > canvas.width - shipWidth + 20) {
                 ship_x = canvas.width - shipWidth + 20;
@@ -195,24 +143,22 @@
                 ship_y = canvas.height - shipHeight;
             }
             
-            // Controls
-            if (keys['i']) { // Move up
+            // Controls for ship2
+            if (keys['i'] && ship2_healthCurrent > 0) { // Move up
                 ship2_y -= ship2_speed;
             }
-            if (keys['k']) { // Move down
+            if (keys['k'] && ship2_healthCurrent > 0) { // Move down
                 ship2_y += ship2_speed;
             }
-            if (keys['j']) { // Move left
+            if (keys['j'] && ship2_healthCurrent > 0) { // Move left
                 ship2_x -= ship2_speed;
             }
-            if (keys['l']) { // Move right
+            if (keys['l'] && ship2_healthCurrent > 0) { // Move right
                 ship2_x += ship2_speed;
             }
-            
-            if (keys['n']) {// shoot 
-                lodes.push(new Bullet2(ship2_x, ship2_y));
-                // IsPlayerShooting = 1;
-                // console.log("IsPlayerShooting: " + IsPlayerShooting);
+            if (keys['n'] && ship2_healthCurrent > 0 && Date.now() - ship2_last_shot > 500) { // shoot with delay
+                lodes.push(new Bullet2(ship2_x + ship2Width / 2, ship2_y + ship2Height)); // Shoot from the center bottom of the ship
+                ship2_last_shot = Date.now();
             }
 
             if (ship2_x < -20) {     //Keeps ship within the x canvas boundaries
@@ -224,89 +170,87 @@
             } else if (ship2_y > canvas.height - ship2Height) {
                 ship2_y = canvas.height - ship2Height;
             }
-        }
 
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // console.log("Canvas height: " + canvas.height)
-            // console.log("Canvas width: " + canvas.width)
-
-            ctx.drawImage(shipImg, ship_x, ship_y);
-            // console.log("Ship height: " + shipImg.height)
-            // console.log("Ship width: " + shipImg.width)
-
-            ctx.drawImage(ship2Img, ship2_x, ship2_y);
-
-            
-            // ctx.drawImage(enemy1Img, enemy1_x, enemy1_y);
-            // console.log("Enemy1 height: " + enemy1Img.height)
-            // console.log("Enemy1 width: " + enemy1Img.width)
-
-            for(var i=0;i<ship_healthMAX;i++){
-                ctx.drawImage(HealthBar, Health_x +(i*30), Health_y);
-                // console.log("HealthBar height: " + HealthBar.height)
-                // console.log("HealthBar width: " + HealthBar.width)
+            for (var i = 0; i < lodes.length; i++) {
+                if (lodes[i] instanceof Bullet) {
+                    lodes[i].bullet_y -= 10; // Move player bullets up at 3 times the speed
+                } else if (lodes[i] instanceof Bullet2) {
+                    lodes[i].bullet_y += 10; // Move enemy bullets down at 3 times the speed
+                }
             }
-            for(var j=ship_healthMAX;j>ship_healthCurrent;j--){
-                ctx.drawImage(EmptyHP, Health_x +(j*30), Health_y);
-                // console.log("EmptyHP height: " + EmptyHP.height)
-                // console.log("EmptyHP width: " + EmptyHP.width)
-            }
-          
-            for(lode in lodes){
-                ctx.drawImage(lodes[lode].PlayerBulletImg, lodes[lode].bullet_x, lodes[lode].bullet_y);
-                lodes[lode].bullet_y -=1;
-                if (lodes[lode].bullet_y<=20){
-                    delete lodes[lode];
+                    
+            // Update bullet positions and check for collisions
+            for (var i = 0; i < lodes.length; i++) {
+                if (lodes[i] instanceof Bullet) {
+                    lodes[i].bullet_y -= 1; // Move player bullets up
+                } else if (lodes[i] instanceof Bullet2) {
+                    lodes[i].bullet_y += 1; // Move enemy bullets down
+                }
+                
+                // Check collision with player ship (ship1)
+                if (lodes[i] instanceof Bullet2 && isColliding(lodes[i], ship_x, ship_y, shipWidth, shipHeight)) {
+                    ship_healthCurrent -= 1; // Reduce health
+                    lodes.splice(i, 1); // Remove the bullet
+                    i--; // Adjust the index after removal
+                } 
+                // Check collision with enemy ship (ship2)
+                else if (lodes[i] instanceof Bullet && isColliding(lodes[i], ship2_x, ship2_y, ship2Width, ship2Height)) {
+                    ship2_healthCurrent -= 1; // Reduce health
+                    lodes.splice(i, 1); // Remove the bullet
+                    i--; // Adjust the index after removal
+                } 
+                // Remove bullet if it goes out of bounds
+                else if (lodes[i].bullet_y <= 0 || lodes[i].bullet_y >= canvas.height) {
+                    lodes.splice(i, 1); 
+                    i--; // Adjust the index after removal
                 }
             }
 
+        }   
 
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // if (IsPlayerShooting == 1) {
-            //     ctx.drawImage(PlayerBulletImg, PlayerBullet_x, PlayerBullet_y);
-            //     console.log("PlayerBulletImg height: " + PlayerBulletImg.height)
-            //     console.log("PlayerBulletImg width: " + PlayerBulletImg.width)
-            //     PlayerBullet_y = PlayerBullet_y+1;
-            //     IsPlayerShooting = 0;
-            // }
-            //hp
-            for(var i=1;i<ship_healthMAX;i++){
-                ctx.drawImage(HealthBar, Health_x +(i*30), Health_y - 40);
+            ctx.drawImage(shipImg, ship_x, ship_y);
+            ctx.drawImage(ship2Img, ship2_x, ship2_y);
 
+            // Draw ship1 (ship) health bar at the bottom right of the screen
+            for (var i = 0; i < ship_healthMAX; i++) {
+                ctx.drawImage(HealthBar, (i * 30), canvas.height - HealthHeight);
             }
-            for(var j=ship_healthMAX;j>ship_healthCurrent;j--){
-                ctx.drawImage(EmptyHP, Health_x +(j*30), Health_y - 40);
-    
+            for (var j = ship_healthMAX - 1; j >= ship_healthCurrent; j--) { // Adjusted loop
+                ctx.drawImage(EmptyHP, (j * 30), canvas.height - HealthHeight);
             }
-            // //shield
-            // for(var k=1;k<ship_shieldMAX;k++){
-            //     console.log("asdasdg");
-            //     ctx.drawImage(ShieldFull, Health_x +(k*26), Health_y - 8);
 
-            // }
-            // for(var l=ship_shieldMAX;l>ship_shieldCurrent;l--){
-            //     ctx.drawImage(ShieldEmpty, Health_x +(l*26), Health_y - 8);
+            // Draw ship2 (ship2) health bar at the top right of the screen
+            for (var i = 0; i < ship2_healthMAX; i++) {
+                ctx.drawImage(HealthBar, (i * 30), 10);
+            }
+            for (var j = ship2_healthMAX - 1; j >= ship2_healthCurrent; j--) { // Adjusted loop
+                ctx.drawImage(EmptyHP, (j * 30), 10);
+            }
 
-            // }
-            
+
+            for (var lode of lodes) {
+                ctx.drawImage(lode.PlayerBulletImg, lode.bullet_x, lode.bullet_y);
+            }
         }
 
         function gameLoop() {
             update();
             draw();
-            requestAnimationFrame(gameLoop);
+            requestAnimationFrame(gameLoop); // Keep the game loop running indefinitely
         }
 
-        function ImagesTouching(bullet_x, bullet_y, PlayerBulletImg, ship2_x, ship2_y, ship2Img) {
-            if (bullet_x >= ship2_x+ship2Img.width || bullet_y+PlayerBulletImg.width <= ship2_x) return false;
-            if (bullet_y >= ship2_y+ship2Img.height || bullet_y+PlayerBulletImg.height <= ship2_) return false;
-            return true;                                                    
+        function isColliding(bullet, ship_x, ship_y, shipWidth, shipHeight) {
+            return bullet.bullet_x < ship_x + shipWidth &&
+                   bullet.bullet_x + bullet.PlayerBulletImg.width > ship_x &&
+                   bullet.bullet_y < ship_y + shipHeight &&
+                   bullet.bullet_y + bullet.PlayerBulletImg.height > ship_y;
+                   
         }
-
-
+        
         gameLoop();
-
     </script>
 </body>
 </html>

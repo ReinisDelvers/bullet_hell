@@ -29,7 +29,7 @@
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
 
-        canvas.width = window.innerWidth * 0.65;
+        canvas.width = window.innerWidth * 0.325;
         canvas.height = window.innerHeight * 0.98;
 
         var HealthUp = 5;
@@ -68,7 +68,7 @@
         var ship2_bullet_speed = 0;
         var ship2_last_shot = 0;
 
-        var justRestart = 0;
+        var justRestart = 1;
         var IsPlayerShooting = 0;
         var PlayerBullet_x = 100;
         var PlayerBullet_y = 100;
@@ -267,7 +267,7 @@
                 
                 ctx.font = "bold 20px Arial";                                   // say so
                 ctx.textAlign="right";
-                ctx.fillText("Control: arrows", canvas.width - 20, canvas.height - 30);
+                ctx.fillText("Control: arrows keys", canvas.width - 20, canvas.height - 30);
                 ctx.font = "bold 20px Arial";
                 ctx.textAlign="right";
                 ctx.fillText("Shoot: enter", canvas.width - 20, canvas.height - 10);

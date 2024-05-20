@@ -68,6 +68,7 @@
         var ship2_bullet_speed = 0;
         var ship2_last_shot = 0;
 
+        var justRestart = 0;
         var IsPlayerShooting = 0;
         var PlayerBullet_x = 100;
         var PlayerBullet_y = 100;
@@ -82,6 +83,7 @@
 
         var EmptyHP = new Image();
         EmptyHP.src = "./Bildes/HeartEmpty.png";
+
 
         document.addEventListener("keydown", handleKeyDown);
         document.addEventListener("keyup", handleKeyUp);
@@ -110,7 +112,7 @@
             ship2_x = (canvas.width - shipWidth) / 2;
             ship2_y = 0;
             ship2_healthCurrent = ship2_healthMAX;
-
+            justRestart = 1;
             // Clear the bullets array
             lodes = [];
         }
@@ -119,19 +121,24 @@
             // Controls for ship1
             if (keys['w'] && ship_healthCurrent > 0) { // Move up
                 ship_y -= ship_speed;
+                justRestart = 0;
             }
             if (keys['s'] && ship_healthCurrent > 0) { // Move down
                 ship_y += ship_speed;
+                justRestart = 0;
             }
             if (keys['a'] && ship_healthCurrent > 0) { // Move left
                 ship_x -= ship_speed;
+                justRestart = 0;
             }
             if (keys['d'] && ship_healthCurrent > 0) { // Move right
                 ship_x += ship_speed;
+                justRestart = 0;
             }
             if (keys[' '] && ship_healthCurrent > 0 && Date.now() - ship_last_shot > 500) { // shoot with delay
                 lodes.push(new Bullet(ship_x + shipWidth / 2, ship_y)); // Shoot from the center of the ship
                 ship_last_shot = Date.now();
+                justRestart = 0;
             }
                     if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
                 ship_x = -20;
@@ -144,21 +151,26 @@
             }
             
             // Controls for ship2
-            if (keys['i'] && ship2_healthCurrent > 0) { // Move up
+            if (keys['ArrowUp'] && ship2_healthCurrent > 0) { // Move up
                 ship2_y -= ship2_speed;
+                justRestart = 0;
             }
-            if (keys['k'] && ship2_healthCurrent > 0) { // Move down
+            if (keys['ArrowDown'] && ship2_healthCurrent > 0) { // Move down
                 ship2_y += ship2_speed;
+                justRestart = 0;
             }
-            if (keys['j'] && ship2_healthCurrent > 0) { // Move left
+            if (keys['ArrowLeft'] && ship2_healthCurrent > 0) { // Move left
                 ship2_x -= ship2_speed;
+                justRestart = 0;
             }
-            if (keys['l'] && ship2_healthCurrent > 0) { // Move right
+            if (keys['ArrowRight'] && ship2_healthCurrent > 0) { // Move right
                 ship2_x += ship2_speed;
+                justRestart = 0;
             }
-            if (keys['n'] && ship2_healthCurrent > 0 && Date.now() - ship2_last_shot > 500) { // shoot with delay
+            if (keys['Enter'] && ship2_healthCurrent > 0 && Date.now() - ship2_last_shot > 500) { // shoot with delay
                 lodes.push(new Bullet2(ship2_x + ship2Width / 2, ship2_y + ship2Height)); // Shoot from the center bottom of the ship
                 ship2_last_shot = Date.now();
+                justRestart = 0;
             }
 
             if (ship2_x < -20) {     //Keeps ship within the x canvas boundaries
@@ -208,18 +220,7 @@
 
         }   
 
-        if (ship2_healthCurrent == 0|| ship2_healthCurrent == 0) {                                            // if the time has run out
-          ctx.fillStyle= "red";
-          ctx.font = "bold 50px Arial";                                   // say so
-          ctx.textAlign="center";
-          ctx.fillText("Game Over", myCanvas.width / 2, myCanvas.height / 2);
-          ctx.font = "bold 20px Arial";
-          ctx.fillText("Press S to play again", myCanvas.width / 2, (myCanvas.height / 2)+50);
-          ctx.textAlign="left";
-        
-        }
-
-        else function draw() {
+        function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             ctx.drawImage(shipImg, ship_x, ship_y);
@@ -235,15 +236,42 @@
 
             // Draw ship2 (ship2) health bar at the top right of the screen
             for (var i = 0; i < ship2_healthMAX; i++) {
-                ctx.drawImage(HealthBar, (i * 30), 10);
+                ctx.drawImage(HealthBar, canvas.width - 30 - (i * 30), 10);
             }
             for (var j = ship2_healthMAX - 1; j >= ship2_healthCurrent; j--) { // Adjusted loop
-                ctx.drawImage(EmptyHP, (j * 30), 10);
+                ctx.drawImage(EmptyHP, canvas.width - 30 - (j * 30), 10);
             }
 
 
             for (var lode of lodes) {
                 ctx.drawImage(lode.PlayerBulletImg, lode.bullet_x, lode.bullet_y);
+            }
+
+            if (ship_healthCurrent <= 0 || ship2_healthCurrent <= 0) {                                            // if the time has run out
+                ctx.fillStyle= "red";
+                ctx.font = "bold 50px Arial";                                   // say so
+                ctx.textAlign="center";
+                ctx.fillText("Game Over", canvas.width/2, canvas.height/2);
+                ctx.font = "bold 20px Arial";
+                ctx.fillText("Press R to play again", canvas.width/2, canvas.height/2+50);
+                ctx.textAlign="left";
+            } else if (justRestart == 1) {
+                ctx.fillStyle= "white";
+
+                ctx.font = "bold 20px Arial";                                   // say so
+                ctx.textAlign="left";
+                ctx.fillText("Control: w, a, s, d", 20, 25);
+                ctx.font = "bold 20px Arial";
+                ctx.textAlign="left";
+                ctx.fillText("Shoot: space", 20, 45);
+                
+                ctx.font = "bold 20px Arial";                                   // say so
+                ctx.textAlign="right";
+                ctx.fillText("Control: arrows", canvas.width - 20, canvas.height - 30);
+                ctx.font = "bold 20px Arial";
+                ctx.textAlign="right";
+                ctx.fillText("Shoot: enter", canvas.width - 20, canvas.height - 10);
+
             }
         }
  

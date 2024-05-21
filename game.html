@@ -61,7 +61,7 @@
         var ship2_y = 0; // Place ship2 at the top of the canvas
         var ship2_speed = 9;
         var ship2_healthMAX = 10;
-        var ship2_healthCurrent = 100;
+        var ship2_healthCurrent = 10;
         var ship2_side_speed = 0;
         var ship2_shieldMAX = 5;
         var ship2_shieldCurrent = 2;
@@ -265,6 +265,7 @@
                 ctx.font = "bold 20px Arial";
                 ctx.fillText("Press R to play again", canvas.width/2, canvas.height/2+50);
                 ctx.textAlign="left";
+                triggerTime = 0;
             } else if (justRestart == 1) {
                 ctx.fillStyle= "white";
 

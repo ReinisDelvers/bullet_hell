@@ -32,6 +32,7 @@
         canvas.width = window.innerWidth * 0.325;
         canvas.height = window.innerHeight * 0.98;
 
+        var triggerTime = 0;
         var HealthUp = 5;
         var ShieldUp = 5;
         var DamageUP = 10;
@@ -112,6 +113,7 @@
             ship2_x = (canvas.width - shipWidth) / 2;
             ship2_y = 0;
             ship2_healthCurrent = ship2_healthMAX;
+            triggerTime = 0;
             justRestart = 1;
             // Clear the bullets array
             lodes = [];
@@ -140,7 +142,7 @@
             //     ship_last_shot = Date.now();
             //     justRestart = 0;
             // }
-            if (justRestart == 0 && Date.now() - ship_last_shot > 500) {
+            if (triggerTime >= 60 && Date.now() - ship_last_shot > 500) {
                 lodes.push(new Bullet(ship_x + shipWidth / 2, ship_y)); // Shoot from the center of the ship
                 ship_last_shot = Date.now();
             }
@@ -176,7 +178,7 @@
             //     ship2_last_shot = Date.now();
             //     justRestart = 0;
             // }
-            if (justRestart == 0 && Date.now() - ship2_last_shot > 500) {
+            if (triggerTime >= 60 && Date.now() - ship2_last_shot > 500) {
                 lodes.push(new Bullet2(ship2_x + ship2Width / 2, ship2_y + ship2Height)); // Shoot from the center bottom of the ship
                 ship2_last_shot = Date.now();
             }
@@ -287,6 +289,7 @@
             update();
             draw();
             requestAnimationFrame(gameLoop); // Keep the game loop running indefinitely
+            triggerTime = triggerTime +1;
         }
 
         function isColliding(bullet, ship_x, ship_y, shipWidth, shipHeight) {

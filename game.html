@@ -135,10 +135,14 @@
                 ship_x += ship_speed;
                 justRestart = 0;
             }
-            if (keys[' '] && ship_healthCurrent > 0 && Date.now() - ship_last_shot > 500) { // shoot with delay
+            // if (keys[' '] && ship_healthCurrent > 0 && Date.now() - ship_last_shot > 500) { // shoot with delay
+            //     lodes.push(new Bullet(ship_x + shipWidth / 2, ship_y)); // Shoot from the center of the ship
+            //     ship_last_shot = Date.now();
+            //     justRestart = 0;
+            // }
+            if (justRestart == 0 && Date.now() - ship_last_shot > 500) {
                 lodes.push(new Bullet(ship_x + shipWidth / 2, ship_y)); // Shoot from the center of the ship
                 ship_last_shot = Date.now();
-                justRestart = 0;
             }
                     if (ship_x < -20) {     //Keeps ship within the x canvas boundaries
                 ship_x = -20;
@@ -167,10 +171,14 @@
                 ship2_x += ship2_speed;
                 justRestart = 0;
             }
-            if (keys['Enter'] && ship2_healthCurrent > 0 && Date.now() - ship2_last_shot > 500) { // shoot with delay
+            // if (keys['Enter'] && ship2_healthCurrent > 0 && Date.now() - ship2_last_shot > 500) { // shoot with delay
+            //     lodes.push(new Bullet2(ship2_x + ship2Width / 2, ship2_y + ship2Height)); // Shoot from the center bottom of the ship
+            //     ship2_last_shot = Date.now();
+            //     justRestart = 0;
+            // }
+            if (justRestart == 0 && Date.now() - ship2_last_shot > 500) {
                 lodes.push(new Bullet2(ship2_x + ship2Width / 2, ship2_y + ship2Height)); // Shoot from the center bottom of the ship
                 ship2_last_shot = Date.now();
-                justRestart = 0;
             }
 
             if (ship2_x < -20) {     //Keeps ship within the x canvas boundaries
@@ -260,17 +268,17 @@
 
                 ctx.font = "bold 20px Arial";                                   // say so
                 ctx.textAlign="left";
-                ctx.fillText("Control: arrows keys", 20, 25);
-                ctx.font = "bold 20px Arial";
-                ctx.textAlign="left";
-                ctx.fillText("Shoot: enter", 20, 45);
+                ctx.fillText("Control: arrow keys", 20, 25);
+                // ctx.font = "bold 20px Arial";
+                // ctx.textAlign="left";
+                // ctx.fillText("Shoot: enter", 20, 45);
                 
                 ctx.font = "bold 20px Arial";                                   // say so
                 ctx.textAlign="right";
                 ctx.fillText("Control: w, a, s, d", canvas.width - 20, canvas.height - 30);
-                ctx.font = "bold 20px Arial";
-                ctx.textAlign="right";
-                ctx.fillText("Shoot: space", canvas.width - 20, canvas.height - 10);
+                // ctx.font = "bold 20px Arial";
+                // ctx.textAlign="right";
+                // ctx.fillText("Shoot: space", canvas.width - 20, canvas.height - 10);
 
             }
         }

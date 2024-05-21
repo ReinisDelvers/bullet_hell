@@ -289,7 +289,9 @@
             update();
             draw();
             requestAnimationFrame(gameLoop); // Keep the game loop running indefinitely
-            triggerTime = triggerTime +1;
+            if (justRestart == 0) {
+                triggerTime = triggerTime +1;
+            }
         }
 
         function isColliding(bullet, ship_x, ship_y, shipWidth, shipHeight) {
